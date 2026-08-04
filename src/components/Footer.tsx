@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 const columns = [
@@ -36,9 +37,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <span className="relative flex h-7 w-7 items-center justify-center rounded-full border border-line-soft bg-ink-raised">
-                <span className="h-2 w-2 rounded-full bg-teal" />
-              </span>
+              <Image src="/logo.png" alt="PSComputers" width={28} height={28} className="h-7 w-7 rounded-full object-cover" />
               <span className="font-display text-[15px] text-bone">PSComputers</span>
             </Link>
             <p className="text-sm text-bone-faint max-w-xs leading-relaxed">

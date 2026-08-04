@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sparkles, ArrowUpRight, LogOut } from "lucide-react";
@@ -36,9 +37,7 @@ export default function Nav({ user }: { user: CustomerProfile | null }) {
     >
       <nav className="mx-auto max-w-[1400px] px-6 md:px-10 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="relative flex h-7 w-7 items-center justify-center rounded-full border border-line-soft bg-ink-raised">
-            <span className="h-2 w-2 rounded-full bg-teal" />
-          </span>
+          <Image src="/logo.png" alt="PSComputers" width={28} height={28} className="h-7 w-7 rounded-full object-cover" />
           <span className="font-display text-[15px] tracking-tight text-bone">PSComputers</span>
         </Link>
 

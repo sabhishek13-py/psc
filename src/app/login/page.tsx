@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getCustomerSession } from "@/lib/customer-session";
 import GoogleLogo from "@/components/icons/GoogleLogo";
@@ -20,9 +21,7 @@ export default async function LoginPage({
     <div className="min-h-screen flex items-center justify-center px-6 py-24">
       <div className="w-full max-w-sm">
         <Link href="/" className="flex items-center justify-center gap-2 mb-10">
-          <span className="relative flex h-7 w-7 items-center justify-center rounded-full border border-line-soft bg-ink-raised">
-            <span className="h-2 w-2 rounded-full bg-teal" />
-          </span>
+          <Image src="/logo.png" alt="PSComputers" width={28} height={28} className="h-7 w-7 rounded-full object-cover" />
           <span className="font-display text-[15px] tracking-tight text-bone">PSComputers</span>
         </Link>
 

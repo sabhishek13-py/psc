@@ -26,6 +26,11 @@ export const metadata: Metadata = {
   title: "PSComputers \u2014 AI Powered Refurbished Computing",
   description:
     "Professionally restored laptops, verified by a 42-point AI inspection. Premium hardware, honest condition scores, real savings.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default async function RootLayout({
