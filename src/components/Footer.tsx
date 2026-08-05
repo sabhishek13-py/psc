@@ -8,7 +8,6 @@ const columns = [
     links: [
       { href: "/products", label: "All laptops" },
       { href: "/compare", label: "Compare models" },
-      { href: "/trade-in", label: "Trade-in estimator" },
       { href: "/ai", label: "AI Assistant" },
     ],
   },
@@ -17,7 +16,7 @@ const columns = [
     links: [
       { href: "/about", label: "Our story" },
       { href: "/business", label: "Business solutions" },
-      { href: "/repair", label: "Repair services" },
+      { href: "/repair", label: "Repair & service" },
       { href: "/blog", label: "Journal" },
     ],
   },

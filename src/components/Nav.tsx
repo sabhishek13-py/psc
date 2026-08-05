@@ -12,8 +12,7 @@ const LINKS = [
   { href: "/compare", label: "Compare" },
   { href: "/ai", label: "AI Assistant" },
   { href: "/business", label: "Business" },
-  { href: "/repair", label: "Repair" },
-  { href: "/trade-in", label: "Trade-in" },
+  { href: "/repair", label: "Repair & Service" },
   { href: "/about", label: "About" },
 ];
 

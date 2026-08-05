@@ -17,9 +17,9 @@ import {
   Building2,
   ChevronDown,
 } from "lucide-react";
-import { useState } from "react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 import LaptopVisual from "@/components/LaptopVisual";
-import ConditionRing from "@/components/ConditionRing";
 import ProductCard from "@/components/ProductCard";
 import { testimonials, stats } from "@/lib/data";
 import type { Laptop } from "@/lib/data";
@@ -35,14 +35,24 @@ const fadeUp: Variants = {
   }),
 };
 
+const HERO_SLIDE_SLUGS = ["dell-xps-13-plus", "macbook-air-13-m1", "thinkpad-x1-carbon-gen10"];
+const HERO_SLIDE_IMAGES: Record<string, string> = {
+  "dell-xps-13-plus": "/images/dell-laptop.jpg",
+  "macbook-air-13-m1": "/images/macbook-air.jpg",
+  "thinkpad-x1-carbon-gen10": "/images/thinkpad.jpg",
+};
+
 export default function Home() {
   const laptops = useLaptops();
   const featured = laptops.filter((l) => l.aiTag).slice(0, 6);
-  const heroLaptop = laptops.find((l) => l.slug === "macbook-pro-14-m3") ?? laptops[0];
+  const heroSlides = HERO_SLIDE_SLUGS
+    .map((slug) => laptops.find((l) => l.slug === slug))
+    .filter((l): l is Laptop => Boolean(l));
+  const fallbackSlides = heroSlides.length ? heroSlides : laptops.slice(0, 3);
 
   return (
     <div>
-      <Hero heroLaptop={heroLaptop} />
+      <Hero heroSlides={fallbackSlides} />
       <TrustStrip />
       <Featured featured={featured} />
       <AIRecommend laptops={laptops} />
@@ -57,7 +67,7 @@ export default function Home() {
   );
 }
 
-function Hero({ heroLaptop }: { heroLaptop: Laptop }) {
+function Hero({ heroSlides }: { heroSlides: Laptop[] }) {
   const [query, setQuery] = useState("");
   return (
     <section className="relative overflow-hidden pt-40 pb-28 md:pt-48 md:pb-36">
@@ -69,12 +79,26 @@ function Hero({ heroLaptop }: { heroLaptop: Laptop }) {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              className="inline-flex items-center gap-2 rounded-full border border-line-soft bg-ink-raised/60 backdrop-blur px-3.5 py-1.5 mb-8"
+              className="flex flex-wrap items-center gap-2 mb-8"
             >
-              <ScanLine className="h-3.5 w-3.5 text-teal" />
-              <span className="text-[12px] text-bone-dim font-mono">
-                42-point AI inspection on every unit
-              </span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-line-soft bg-ink-raised/60 backdrop-blur px-3.5 py-1.5">
+                <ScanLine className="h-3.5 w-3.5 text-teal" />
+                <span className="text-[12px] text-bone-dim font-mono">
+                  42-point AI inspection on every unit
+                </span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-line-soft bg-ink-raised/60 backdrop-blur pl-1.5 pr-3.5 py-1.5">
+                <Image
+                  src="/images/hyderabad-charminar.jpg"
+                  alt="Charminar, Hyderabad"
+                  width={64}
+                  height={64}
+                  className="h-5 w-5 rounded-full object-cover"
+                />
+                <span className="text-[12px] text-bone-dim font-mono">
+                  Serving Hyderabad &amp; all of Telangana
+                </span>
+              </div>
             </motion.div>
 
             <motion.h1
@@ -82,12 +106,12 @@ function Hero({ heroLaptop }: { heroLaptop: Laptop }) {
               initial="hidden"
               animate="show"
               custom={1}
-              className="font-display text-balance text-[13vw] leading-[0.95] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.4rem] text-bone"
+              className="font-display font-bold text-balance text-[13vw] leading-[0.95] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.4rem] text-bone"
             >
-              Restored to
+              One stop for
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-soft to-teal-soft">
-                first-day form.
+                refurbished laptops.
               </span>
             </motion.h1>
 
@@ -153,32 +177,63 @@ function Hero({ heroLaptop }: { heroLaptop: Laptop }) {
             transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1], delay: 0.2 }}
             className="relative"
           >
-            <div className="relative mx-auto max-w-md">
-              <LaptopVisual colorway={heroLaptop.colorway} floatAnim scanning tiltDeg={-10} />
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.9, duration: 0.6 }}
-                className="absolute -right-2 top-4 rounded-xl border border-line-soft bg-ink-raised/90 backdrop-blur px-3.5 py-3 shadow-2xl"
-              >
-                <ConditionRing score={heroLaptop.conditionScore} label="Condition score" />
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.1, duration: 0.6 }}
-                className="absolute -left-4 bottom-10 rounded-xl border border-line-soft bg-ink-raised/90 backdrop-blur px-3.5 py-2.5 shadow-2xl"
-              >
-                <div className="text-[10px] text-bone-faint font-mono uppercase tracking-wide">
-                  {heroLaptop.brand} {heroLaptop.model}
-                </div>
-                <div className="text-sm text-bone font-display">{formatINR(heroLaptop.price)}</div>
-              </motion.div>
-            </div>
+            <HeroCarousel slides={heroSlides} />
           </motion.div>
         </div>
       </div>
     </section>
+  );
+}
+
+function HeroCarousel({ slides }: { slides: Laptop[] }) {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (slides.length < 2) return;
+    const id = setInterval(() => {
+      setActive((i) => (i + 1) % slides.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [slides.length]);
+
+  const current = slides[active];
+  if (!current) return null;
+  const imageSrc = HERO_SLIDE_IMAGES[current.slug];
+
+  return (
+    <div className="relative mx-auto max-w-xl">
+      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-line-soft shadow-2xl">
+        {imageSrc && (
+          <Image
+            key={current.id}
+            src={imageSrc}
+            alt={`${current.brand} ${current.model}`}
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
+        <div className="absolute left-3 bottom-3 rounded-xl border border-line-soft bg-ink-raised/90 backdrop-blur px-3.5 py-2.5 shadow-xl">
+          <div className="text-[10px] text-bone-faint font-mono uppercase tracking-wide">
+            {current.brand} {current.model}
+          </div>
+          <div className="text-sm text-bone font-display">{formatINR(current.price)}</div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center gap-2 mt-10">
+        {slides.map((s, i) => (
+          <button
+            key={s.id}
+            onClick={() => setActive(i)}
+            aria-label={`Show ${s.brand} ${s.model}`}
+            className={`h-1.5 rounded-full transition-all ${
+              i === active ? "w-6 bg-bone" : "w-1.5 bg-bone-faint/40 hover:bg-bone-faint/70"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -335,7 +390,7 @@ function HowItWorks() {
           How it works
         </div>
         <h2 className="font-display text-3xl md:text-4xl text-bone text-balance max-w-lg mb-14">
-          From trade-in to your desk, every step is measured
+          From inspection to your desk, every step is measured
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line rounded-2xl overflow-hidden">
           {steps.map((s, i) => (
@@ -533,7 +588,7 @@ function FAQ() {
     { q: "How do you grade condition?", a: "Every laptop runs a 42-point AI-assisted diagnostic covering display, battery health, keyboard, ports, hinge stress, and thermal performance. The resulting score and full report ship with your order." },
     { q: "What warranty is included?", a: "Every unit includes a minimum 6-month warranty, with 12-month coverage standard on Grade A and A+ machines. Extended plans are available at checkout." },
     { q: "Can I return a laptop?", a: "Yes \u2014 a 30-day return window applies to every order, no restocking fee, as long as the unit matches the condition it shipped in." },
-    { q: "Do you buy back old laptops?", a: "Yes, our trade-in estimator gives you an instant AI-generated offer based on model, condition, and current market demand." },
+    { q: "Do you repair laptops you didn't sell?", a: "Yes — our repair & service team works on any brand, with the same AI-driven diagnostics and a 90-day repair warranty." },
     { q: "Is bulk / business pricing available?", a: "Yes \u2014 teams of 10 or more get volume pricing, GST-compliant billing, and a dedicated account manager. See the Business page for details." },
   ];
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -586,7 +641,7 @@ function Newsletter() {
               Get notified when your grade lands in stock
             </h2>
             <p className="text-bone-dim mb-8 max-w-md mx-auto">
-              Weekly drops, restock alerts, and trade-in price movements &mdash; no spam.
+              Weekly drops, restock alerts, and repair service updates &mdash; no spam.
             </p>
             {sent ? (
               <div className="text-teal-soft text-sm font-mono">You&rsquo;re on the list.</div>

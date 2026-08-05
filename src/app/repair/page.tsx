@@ -27,7 +27,7 @@ export default function RepairPage() {
   return (
     <div className="pt-32 pb-24">
       <section className="mx-auto max-w-[1400px] px-6 md:px-10 mb-20">
-        <div className="text-[11px] uppercase tracking-wider text-amber-soft font-mono mb-3">Repair services</div>
+        <div className="text-[11px] uppercase tracking-wider text-amber-soft font-mono mb-3">Repair &amp; Service</div>
         <h1 className="font-display text-4xl md:text-6xl text-bone text-balance leading-[1.02] mb-6 max-w-2xl">
           Already own a laptop? We&apos;ll bring it back to life too.
         </h1>
@@ -36,7 +36,7 @@ export default function RepairPage() {
           your own hardware &mdash; tracked end to end, with a 90-day warranty on every repair.
         </p>
         <Link href="/contact" className="inline-flex items-center gap-2 rounded-full bg-bone text-ink px-6 py-3.5 text-sm font-medium hover:bg-amber-soft transition-colors">
-          Book a repair <ArrowRight className="h-4 w-4" />
+          Book a service <ArrowRight className="h-4 w-4" />
         </Link>
       </section>
 

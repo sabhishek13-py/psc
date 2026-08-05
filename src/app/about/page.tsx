@@ -6,7 +6,7 @@ import { stats } from "@/lib/data";
 const TIMELINE = [
   { year: "2021", title: "Founded in a repair shop", detail: "Started restoring 12 laptops a month by hand, grading condition on a paper checklist." },
   { year: "2022", title: "First AI inspection model", detail: "Automated the diagnostic pipeline, cutting inspection time from 3 hours to 40 minutes." },
-  { year: "2023", title: "Crossed 50,000 units restored", detail: "Opened a second restoration facility to keep up with trade-in volume." },
+  { year: "2023", title: "Crossed 50,000 units restored", detail: "Opened a second restoration facility to keep up with repair and inspection volume." },
   { year: "2024", title: "Business program launched", detail: "Started fleet imaging and bulk pricing for teams of 10 to 10,000 seats." },
   { year: "2026", title: "214,000 laptops and counting", detail: "Now inspecting on a 42-point model with condition scores accurate within 2 points of technician review." },
 ];
