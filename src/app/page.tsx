@@ -75,31 +75,38 @@ function Hero({ heroSlides }: { heroSlides: Laptop[] }) {
       <div className="mx-auto max-w-[1400px] px-6 md:px-10 relative">
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
           <div>
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="flex flex-wrap items-center gap-2 mb-8"
-            >
-              <div className="inline-flex items-center gap-2 rounded-full border border-line-soft bg-ink-raised/60 backdrop-blur px-3.5 py-1.5">
+            <div className="flex flex-col items-start gap-3 mb-8">
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                className="inline-flex items-center gap-2.5 rounded-full border border-line-soft bg-ink-raised/60 backdrop-blur pl-2 pr-4 py-2"
+              >
+                <Image
+                  src="/images/hyderabad-charminar.jpg"
+                  alt="Charminar, Hyderabad"
+                  width={96}
+                  height={96}
+                  className="h-9 w-9 rounded-full object-cover"
+                />
+                <span className="text-sm md:text-base text-bone font-semibold">
+                  Serving Hyderabad &amp; all of Telangana
+                </span>
+              </motion.div>
+
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={0.5}
+                className="inline-flex items-center gap-2 rounded-full border border-line-soft bg-ink-raised/60 backdrop-blur px-3.5 py-1.5"
+              >
                 <ScanLine className="h-3.5 w-3.5 text-teal" />
                 <span className="text-[12px] text-bone-dim font-mono">
                   42-point AI inspection on every unit
                 </span>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-line-soft bg-ink-raised/60 backdrop-blur pl-1.5 pr-3.5 py-1.5">
-                <Image
-                  src="/images/hyderabad-charminar.jpg"
-                  alt="Charminar, Hyderabad"
-                  width={64}
-                  height={64}
-                  className="h-5 w-5 rounded-full object-cover"
-                />
-                <span className="text-[12px] text-bone-dim font-mono">
-                  Serving Hyderabad &amp; all of Telangana
-                </span>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
 
             <motion.h1
               variants={fadeUp}
