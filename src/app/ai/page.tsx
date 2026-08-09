@@ -16,7 +16,7 @@ type Message =
 const SUGGESTED = [
   "Best laptop for video editing under ₹1,25,000",
   "Lightest laptop for a 6-hour flight",
-  "Compare MacBook Air vs ThinkPad X1 Carbon",
+  "Compare MacBook Pro vs Dell Latitude",
   "My laptop's battery drains fast \u2014 what's wrong?",
   "Something for a first-year CS student",
 ];
@@ -33,13 +33,14 @@ function respond(query: string, laptops: Laptop[]): Message {
   }
 
   if (q.includes("compare") || q.includes(" vs ")) {
-    const air = laptops.find((l) => l.slug === "macbook-air-13-m2")!;
-    const x1 = laptops.find((l) => l.slug === "thinkpad-x1-carbon-gen10")!;
+    const mac = laptops.find((l) => l.slug === "macbook-pro-13-a2251-2020");
+    const dell = laptops.find((l) => l.slug === "dell-latitude-7440");
+    const picks = [mac, dell].filter((l): l is Laptop => Boolean(l));
     return {
       role: "assistant",
       text:
-        "Here's the honest trade-off: the MacBook Air M2 wins on battery life and silence (fanless, 18hrs), while the X1 Carbon wins on repairability, port selection, and IT manageability if you're in a Windows environment. If you don't need Windows-specific software, I'd lean Air.",
-      recs: [air, x1],
+        "Here's the honest trade-off: the MacBook Pro wins on display quality and macOS polish, while the Latitude wins on repairability, port selection, and IT manageability if you're in a Windows environment. If you don't need Windows-specific software, I'd lean Mac.",
+      recs: picks.length ? picks : laptops.slice(0, 2),
     };
   }
 

@@ -35,12 +35,7 @@ const fadeUp: Variants = {
   }),
 };
 
-const HERO_SLIDE_SLUGS = ["dell-xps-13-plus", "macbook-air-13-m1", "thinkpad-x1-carbon-gen10"];
-const HERO_SLIDE_IMAGES: Record<string, string> = {
-  "dell-xps-13-plus": "/images/dell-laptop.jpg",
-  "macbook-air-13-m1": "/images/macbook-air.jpg",
-  "thinkpad-x1-carbon-gen10": "/images/thinkpad.jpg",
-};
+const HERO_SLIDE_SLUGS = ["dell-latitude-7440", "macbook-pro-13-a2251-2020", "dell-latitude-7420"];
 
 export default function Home() {
   const laptops = useLaptops();
@@ -205,12 +200,12 @@ function HeroCarousel({ slides }: { slides: Laptop[] }) {
 
   const current = slides[active];
   if (!current) return null;
-  const imageSrc = HERO_SLIDE_IMAGES[current.slug];
+  const imageSrc = current.photos?.[0];
 
   return (
     <div className="relative mx-auto max-w-xl">
       <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-line-soft shadow-2xl">
-        {imageSrc && (
+        {imageSrc ? (
           <Image
             key={current.id}
             src={imageSrc}
@@ -219,6 +214,10 @@ function HeroCarousel({ slides }: { slides: Laptop[] }) {
             className="object-cover"
             priority
           />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center p-10">
+            <LaptopVisual colorway={current.colorway} floatAnim />
+          </div>
         )}
         <div className="absolute left-3 bottom-3 rounded-xl border border-line-soft bg-ink-raised/90 backdrop-blur px-3.5 py-2.5 shadow-xl">
           <div className="text-[10px] text-bone-faint font-mono uppercase tracking-wide">
@@ -275,7 +274,7 @@ function Featured({ featured }: { featured: Laptop[] }) {
               Featured
             </div>
             <h2 className="font-display text-3xl md:text-4xl text-bone text-balance max-w-lg">
-              Six machines our AI keeps recommending
+              Machines our AI keeps recommending
             </h2>
           </div>
           <Link
